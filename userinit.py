@@ -128,6 +128,7 @@ class JDlogin(object):
                 except Exception as e: 
                     return {'code': 'error', 'msg': str(e)}
 
+<<<<<<< HEAD
     def to_cookielib_cookie(self, selenium_cookie):
         return http.cookiejar.Cookie(
             version=0,
@@ -153,13 +154,18 @@ class JDlogin(object):
     def put_cookies_in_jar(self, selenium_cookies, cookie_jar):
         for cookie in selenium_cookies:
             cookie_jar.set_cookie(self.to_cookielib_cookie(cookie))
+=======
+>>>>>>> 01fd1f176f1b80f75830cc45628e7ff8a9daee71
 
     def cookie_update(self):
         print("\nAuto handle cookie in file, Mozilla Format ...");
         cookieJarFileMozilla = http.cookiejar.MozillaCookieJar('cookies/' + self.un + '.txt')
         print('Setting cookies ...')
         requests.utils.cookiejar_from_dict({c.name: c.value for c in self.session.cookies}, cookieJarFileMozilla, True)
+<<<<<<< HEAD
         #self.put_cookies_in_jar(self.browser.get_cookies(), cookieJarFileMozilla)
+=======
+>>>>>>> 01fd1f176f1b80f75830cc45628e7ff8a9daee71
         cookieJarFileMozilla.save('cookies/' + self.un + '.txt', ignore_expires=True, ignore_discard=True)
         print('\n######## ' + self.un + ' login complete ########\n')
 
@@ -176,10 +182,14 @@ class JDlogin(object):
                 if resp['code'] == 'error':
                     print(resp['msg'])
                     break
+<<<<<<< HEAD
                 # set cookies from PhantomJS
                 for cookie in self.browser.get_cookies():
                     self.session.cookies.set(cookie['name'], cookie['value'], domain='.jd.com', path='/')
                 #self.session.cookies.update( {c['name']:c['value'] for c in self.browser.get_cookies()} )
+=======
+                self.session.cookies.update( {c['name']:c['value'] for c in self.browser.get_cookies()} )
+>>>>>>> 01fd1f176f1b80f75830cc45628e7ff8a9daee71
                 self.headers['Host'] = 'passport.jd.com'
                 acRequired = self.session.post(self.auth_url, headers=self.headers, data={'loginName':self.un}, allow_redirects=False).text #返回({"verifycode":true})或({"verifycode":false})
 
@@ -228,9 +238,15 @@ class JDlogin(object):
                 elem_sub.click()
                 time.sleep(1)
                 # set cookies from PhantomJS
+<<<<<<< HEAD
                 for cookie in self.browser.get_cookies():
                     self.session.cookies.set(cookie['name'], cookie['value'], domain='.jd.com', path='/')
                 #self.session.cookies.update( {c['name']:c['value'] for c in self.browser.get_cookies()} )
+=======
+                #for cookie in self.browser.get_cookies():
+                #    self.session.cookies[cookie['name']] = str(cookie['value'])
+                self.session.cookies.update( {c['name']:c['value'] for c in self.browser.get_cookies()} )
+>>>>>>> 01fd1f176f1b80f75830cc45628e7ff8a9daee71
 
                 self.headers['Host'] = 'home.jd.com'
                 home_page = self.session.get(self.home_url, headers=self.headers, timeout=30, allow_redirects=False)
