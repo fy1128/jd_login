@@ -129,13 +129,17 @@ class JDlogin(object):
                     return {'code': 'error', 'msg': str(e)}
 
     def to_cookielib_cookie(self, selenium_cookie):
+        if 'domain' in selenium_cookie:
+            domain = selenium_cookie['domain'].split('.')
+            domain = '.' + '.'.join([domain[-2], domain[-1]])
+
         return http.cookiejar.Cookie(
             version=0,
             name=selenium_cookie['name'],
             value=selenium_cookie['value'],
             port='80',
             port_specified=False,
-            domain=selenium_cookie['domain'],
+            domain=domain,
             domain_specified=True,
             domain_initial_dot=False,
             path=selenium_cookie['path'],
@@ -158,8 +162,8 @@ class JDlogin(object):
         print("\nAuto handle cookie in file, Mozilla Format ...");
         cookieJarFileMozilla = http.cookiejar.MozillaCookieJar('cookies/' + self.un + '.txt')
         print('Setting cookies ...')
-        requests.utils.cookiejar_from_dict({c.name: c.value for c in self.session.cookies}, cookieJarFileMozilla, True)
-        #self.put_cookies_in_jar(self.browser.get_cookies(), cookieJarFileMozilla)
+        #requests.utils.cookiejar_from_dict({c.name: c.value for c in self.session.cookies}, cookieJarFileMozilla, True)
+        self.put_cookies_in_jar(self.browser.get_cookies(), cookieJarFileMozilla)
         cookieJarFileMozilla.save('cookies/' + self.un + '.txt', ignore_expires=True, ignore_discard=True)
         print('\n######## ' + self.un + ' login complete ########\n')
 
